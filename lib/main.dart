@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
               title: const Align(
                   alignment: Alignment.center,
                   child: Text(
-                    'گیـــاهــتو',
+                    'گیــــاهــتو',
                     style: TextStyle(fontFamily: 'aseman', fontSize: 30),
                   )),
               leading: Builder(
