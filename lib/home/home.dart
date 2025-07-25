@@ -1,237 +1,34 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:giaheto/plants/difenbakhia/difen.dart';
-import 'package:giaheto/plants/ficus/ficus.dart';
-import 'package:giaheto/plants/sansveria/sansveria.dart';
 import 'package:intl/intl.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: HomePage(),
-    );
-  }
-}
-
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Widget> searchResults = [];
-
-  final Map<String, Widget> plantsPages = {
-    'سانسوریا': Sansveria(
-      key: null,
-    ),
-    'دیفن باخیا': Difen(
-      key: null,
-    ),
-    'سینگونیوم ': Difen(
-      key: null,
-    ),
-    'فیکوس': Ficus(
-      key: null,
-    ),
-    // اضافه کردن سایر گیاهان و صفحات مربوطه در اینجا
-  };
-
-  void performSearch(String query) {
-    // اگر رشته جستجو خالی است، لیست نتایج را خالی کن و از متد خارج شو
-    if (query.isEmpty) {
-      setState(() {
-        searchResults = [];
-      });
-      return;
-    }
-
-    List<Widget> results = [];
-    // جستجو برای گیاهانی که نام آن‌ها شامل رشته جستجو می‌شود
-    plantsPages.forEach((name, page) {
-      if (name.contains(query.toLowerCase())) {
-        // افزودن آیتم به نتایج جستجو
-        results.add(Container(
-          margin: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.amber,
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: ListTile(
-            title: Align(
-              alignment: Alignment.centerRight,
-              child: Row(
-                children: [
-                  Text(name,
-                      style:
-                          const TextStyle(fontFamily: 'aseman', fontSize: 25)),
-                  SizedBox(width: 10),
-                ],
-              ),
-            ),
-            onTap: () {
-              // ناوبری به صفحه گیاه انتخاب شده
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => page));
-            },
-          ),
-        ));
-      }
-    });
-
-    setState(() {
-      searchResults = results;
-    });
-  }
-
   String currentTime = '';
   String greeting = '';
 
   @override
-  void initState() {
-    super.initState();
-    Timer.periodic(const Duration(milliseconds: 100), (Timer timer) {
-      setState(() {
-        final now = DateTime.now();
-        final timeFormat = DateFormat('HH:mm');
-        currentTime = timeFormat.format(now);
-        greeting = _getGreeting(now.hour);
-      });
-    });
-  }
+void initState() {
+  super.initState();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(style: BorderStyle.solid),
-              borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(40),
-                  bottomRight: Radius.circular(40)),
-              color: Colors.amber,
-            ),
-            height: 150,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 254, 255, 255),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(style: BorderStyle.solid,width: 3)
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        const Row(
-                          children: [
-                            Icon(
-                              Icons.access_time,
-                            ),
-                            Text(
-                              ' ساعت ',
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  fontFamily: 'aseman',
-                                  color: Color.fromARGB(255, 0, 149, 109)),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          ' $currentTime',
-                          style: const TextStyle(
-                              fontSize: 30,
-                              fontFamily: 'aseman',
-                              color: Color.fromARGB(255, 0, 0, 0)),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 254, 255, 255),
-                    borderRadius: BorderRadius.circular(10),
-                      border: Border.all(style: BorderStyle.solid,width: 3)
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      if (greeting == ' صبح بخیر')
-                        const Icon(Icons.wb_sunny, color: Colors.amber),
-                      if (greeting == ' ظهر بخیر')
-                        const Icon(Icons.brightness_5, color: Colors.amber),
-                      if (greeting == ' شبت پرتقالـی  ')
-                        const Icon(
-                          Icons.nightlight_round,
-                          color: Colors.amber,
-                        ),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          greeting,
-                          style: const TextStyle(
-                              fontSize: 30,
-                              fontFamily: 'aseman',
-                              color: Color.fromARGB(255, 0, 149, 109)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0,right: 15),
-            child: Container(
-              margin: EdgeInsets.all(16),
-              child: TextField(
-                onChanged: (value) {
-                  performSearch(value);
-                },
-                decoration: InputDecoration(
-                  label: Text('... گــیاهـتو پیــدا کن'),
-                  floatingLabelAlignment: FloatingLabelAlignment.center,
-                  labelStyle: TextStyle(fontFamily: 'aseman', fontSize: 20),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
-                  hintText: 'جــستــجو',
-                  hintStyle: TextStyle(fontFamily: 'aseman', fontSize: 20),
-                  alignLabelWithHint: true,
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              children: searchResults,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  final now = DateTime.now();
+  currentTime = DateFormat('HH:mm').format(now);
+  greeting = _getGreeting(now.hour);
+
+  Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+    setState(() {
+      final now = DateTime.now();
+      currentTime = DateFormat('HH:mm').format(now);
+      greeting = _getGreeting(now.hour);
+    });
+  });
+}
 
   String _getGreeting(int hour) {
     if (hour < 12) {
@@ -241,5 +38,135 @@ class _HomePageState extends State<HomePage> {
     } else {
       return ' شبت پرتقالـی  ';
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          const SizedBox(height: 0),
+          AppHeader(time: currentTime, greeting: greeting),
+        ],
+      ),
+    );
+  }
+}
+
+// -------------------- ویجت‌های ساختاری --------------------
+
+class AppHeader extends StatelessWidget {
+  final String time;
+  final String greeting;
+
+  const AppHeader({required this.time, required this.greeting, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(style: BorderStyle.solid),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(40),
+          bottomRight: Radius.circular(40),
+        ),
+        color: const Color.fromARGB(255, 0, 149, 109),
+      ),
+      height: 150,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TimeBox(time: time),
+          GreetingBox(greeting: greeting),
+        ],
+      ),
+    );
+  }
+}
+
+class TimeBox extends StatelessWidget {
+  final String time;
+  const TimeBox({required this.time, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 254, 255, 255),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(style: BorderStyle.solid, width: 3),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const Row(
+              children: [
+                Icon(Icons.access_time),
+                Text(
+                  ' ساعت ',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'aseman',
+                    color: Color.fromARGB(255, 0, 149, 109),
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              time,
+              style: const TextStyle(
+                fontSize: 30,
+                fontFamily: 'aseman',
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class GreetingBox extends StatelessWidget {
+  final String greeting;
+  const GreetingBox({required this.greeting, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Icon icon;
+    if (greeting == ' صبح بخیر') {
+      icon = const Icon(Icons.wb_sunny, color: Colors.amber);
+    } else if (greeting == ' ظهر بخیر') {
+      icon = const Icon(Icons.brightness_5, color: Colors.amber);
+    } else {
+      icon = const Icon(Icons.nightlight_round, color: Colors.amber);
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 254, 255, 255),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(style: BorderStyle.solid, width: 3),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          icon,
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text(
+              greeting,
+              style: const TextStyle(
+                fontSize: 30,
+                fontFamily: 'aseman',
+                color: Color.fromARGB(255, 0, 149, 109),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

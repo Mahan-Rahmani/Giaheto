@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:giaheto/home/home.dart';
-import 'package:giaheto/identifier/learn.dart';
+import 'package:giaheto/learning/learn.dart';
 import 'package:giaheto/plants/plant.dart';
 
 void main() {
   runApp(const MyApp());
 }
-
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class MyApp extends StatelessWidget {
@@ -15,7 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 1, 178, 158)),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 1, 178, 158)),
       ),
       home: Scaffold(
         key: _scaffoldKey,
@@ -40,15 +40,16 @@ class MyApp extends StatelessWidget {
                   );
                 },
               ),
-              backgroundColor: Color.fromARGB(255, 0, 149, 109),
+              backgroundColor: const Color.fromARGB(255, 0, 149, 109),
             ),
             bottomNavigationBar: menu(),
-            body: TabBarView(
+            body: const TabBarView(
                 physics: NeverScrollableScrollPhysics(),
-                children: <Widget>[Learn(),HomePage(),Category()]),
+                children: <Widget>[Learn(), HomePage(), Category()]),
           ),
         ),
         drawer: Drawer(
+          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           // Add a ListView to the drawer. This ensures the user can scroll
           // through the options in the drawer if there isn't enough vertical
           // space to fit everything.
@@ -56,21 +57,126 @@ class MyApp extends StatelessWidget {
             // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                    color: Colors.amber,
+                    border: Border(
+                        bottom: BorderSide(
+                      width: 5,
+                      color: Color.fromARGB(255, 0, 149, 109),
+                    ))),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      child: Image.asset(
+                        'lib/image/logo.png',
+                        width: 50,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 40.0),
+                      child: Text(
+                        'مـــنــوی اصــــلـی',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'aseman',
+                          fontSize: 31,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          fontWeight: FontWeight.w700
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                child: Text('Drawer Header'),
               ),
               ListTile(
-                title: const Text('Item 1'),
+                title: Container(
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 0, 149, 109),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Text(
+                        'ســازندگــان',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'aseman',
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500
+                        ),
+                      ),
+                    )),
                 onTap: () {
                   // Update the state of the app.
                   // ...
                 },
               ),
               ListTile(
-                title: const Text('Item 2'),
+                title: Container(
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 0, 149, 109),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Text(
+                        'تمــاس با ما',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'aseman',
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500
+                        ),
+                      ),
+                    )),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              ListTile(
+                title: Container(
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 0, 149, 109),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Text(
+                        'نــظــر بدهــید',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'aseman',
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500
+                        ),
+                      ),
+                    )),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              ListTile(
+                title: Container(
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 0, 149, 109),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Text(
+                        'معـــرفی بـه دوســـتان',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'aseman',
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500
+                        ),
+                      ),
+                    )),
                 onTap: () {
                   // Update the state of the app.
                   // ...
@@ -86,7 +192,7 @@ class MyApp extends StatelessWidget {
 
 Widget menu() {
   return Container(
-    color: Color.fromARGB(255, 0, 149, 109),
+    color: const Color.fromARGB(255, 0, 149, 109),
     child: const TabBar(
         indicatorSize: TabBarIndicatorSize.label,
         indicatorWeight: 5,

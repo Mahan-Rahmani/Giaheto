@@ -28,7 +28,7 @@ class _LightState extends State<Light> {
                 'تأمین نور گیاهان آپارتمانی و 3 پارامتر اصلی آن',
                 style: TextStyle(fontFamily: 'aseman', fontSize: 30),
               )),
-              backgroundColor: Color.fromARGB(255, 0, 149, 109),
+              backgroundColor: const Color.fromARGB(255, 0, 149, 109),
             ),
             body: ListView(
               physics: const BouncingScrollPhysics(),
@@ -48,9 +48,9 @@ class _LightState extends State<Light> {
                   padding: const EdgeInsets.all(13.0),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 229, 255, 248),
+                        color: const Color.fromARGB(255, 229, 255, 248),
                         border: Border.all(
-                            color: Color.fromARGB(255, 0, 149, 109), width: 3),
+                            color: const Color.fromARGB(255, 0, 149, 109), width: 3),
                         borderRadius: BorderRadius.circular(30)),
                     child: Padding(
                       padding: const EdgeInsets.all(13.0),
@@ -90,7 +90,7 @@ class _LightState extends State<Light> {
                                 child:
                                     Image.asset('lib/image/snsvria/shot2.jpg')),
                             Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: BannerAd(
@@ -124,7 +124,7 @@ class _LightState extends State<Light> {
                                 child:
                                     Image.asset('lib/image/snsvria/shot3.jpg')),
                             Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: BannerAd(
@@ -148,7 +148,7 @@ class _LightState extends State<Light> {
                                   TextStyle(fontFamily: 'aseman', fontSize: 25),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(bottom: 30),
+                              padding: const EdgeInsets.only(bottom: 30),
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: BannerAd(
@@ -180,7 +180,7 @@ class _LightState extends State<Light> {
             child: Padding(
               padding: const EdgeInsets.all(30),
               child: FloatingActionButton.extended(
-                  backgroundColor: Color.fromARGB(255, 0, 149, 109),
+                  backgroundColor: const Color.fromARGB(255, 0, 149, 109),
                   onPressed: () {
                     Navigator.pop(context);
                   },

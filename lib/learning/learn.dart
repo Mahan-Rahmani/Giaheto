@@ -5,7 +5,7 @@ import 'package:giaheto/plants/aglonema/aglonema.dart';
 import 'package:giaheto/plants/difenbakhia/difen.dart';
 import 'package:giaheto/plants/ficus/ficus.dart';
 import 'package:giaheto/plants/sansveria/sansveria.dart';
-import 'package:giaheto/identifier/light/light.dart';
+import 'package:giaheto/learning/light/light.dart';
 
 class Plant {
   final String name;
@@ -107,16 +107,18 @@ class _LearnState extends State<Learn> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     plant.name,
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
-                        fontSize: 25,
+                        fontSize: 23,
                         color: Color.fromARGB(255, 0, 0, 0),
                         fontWeight: FontWeight.w900,
-                        fontFamily: 'aseman'),
+                        fontFamily: 'aseman',
+                        ),
                   ),
                 ),
               )

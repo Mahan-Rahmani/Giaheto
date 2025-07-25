@@ -9,78 +9,83 @@ import 'package:giaheto/plants/sansveria/sansveria.dart';
 class Plant {
   final String name;
   final String imagePath;
-  final Widget page; // اضافه کردن فیلد جدید برای نگهداری صفحه مربوط به هر گیاه
+  final Widget Function() buildPage;
 
-  Plant({required this.name, required this.imagePath, required this.page});
+  Plant({
+    required this.name,
+    required this.imagePath,
+    required this.buildPage,
+  });
 }
 
 class Category extends StatefulWidget {
   const Category({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _CategoryState createState() => _CategoryState();
 }
 
 class _CategoryState extends State<Category> {
-  final List<Plant> plants = [
-    Plant(
-      name: 'سانســـوریا',
-      imagePath: 'lib/image/snsvria.png',
-      page: const Sansveria(
-        key: null,
-      ),
-    ),
-    Plant(
-      name: 'دیفن باخیا',
-      imagePath: 'lib/image/dfnbkhia.png',
-      page: const Difen(
-        key: null,
-      ),
-    ),
-    Plant(
-      name: 'فیکوس',
-      imagePath: 'lib/image/ficus.png',
-      page: const Ficus(
-        key: null,
-      ),
-    ),
-    Plant(
-      name: 'آگلونما',
-      imagePath: 'lib/image/Aglaonema.png',
-      page: const Aglonema(
-        key: null,
-      ),
-    ),
-    Plant(
-      name: 'آگلونما',
-      imagePath: 'lib/image/Aglaonema.png',
-      page: const Sansveria(
-        key: null,
-      ),
-    ),
-    Plant(
-      name: 'آگلونما',
-      imagePath: 'lib/image/Aglaonema.png',
-      page: const Sansveria(
-        key: null,
-      ),
-    ),
-    Plant(
-      name: 'آگلونما',
-      imagePath: 'lib/image/Aglaonema.png',
-      page: const Sansveria(
-        key: null,
-      ),
-    ),
-
-    // اضافه کردن سایر گیاهان به این لیست
-  ];
+  late final List<Plant> plants;
+  List<Plant> searchResults = [];
+  final TextEditingController searchController = TextEditingController();
+  final FocusNode searchFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     AdiveryPlugin.initialize('14e0507e-394a-442a-8c7a-01e254fdf3e8');
+    searchFocusNode.unfocus(); // جلوگیری از فوکوس خودکار
+    plants = [
+      Plant(
+        name: 'آگلونما',
+        imagePath: 'lib/image/Aglaonema.png',
+        buildPage: () => const Aglonema(key: ValueKey('aglonema')),
+      ),
+      Plant(
+        name: 'دیفن باخیا',
+        imagePath: 'lib/image/dfnbkhia.png',
+        buildPage: () => const Difen(key: ValueKey('difen')),
+      ),
+      Plant(
+        name: 'فیکوس',
+        imagePath: 'lib/image/ficus.png',
+        buildPage: () => const Ficus(key: ValueKey('ficus')),
+      ),
+      Plant(
+        name: 'سانســـوریا',
+        imagePath: 'lib/image/snsvria.png',
+        buildPage: () => const Sansveria(key: ValueKey('sansveria')),
+      ),
+      // موارد آزمایشی موقت با تصویر تکراری
+      Plant(
+        name: 'سینگونیوم',
+        imagePath: 'lib/image/Aglaonema.png',
+        buildPage: () => const Sansveria(key: ValueKey('syngonium')),
+      ),
+      Plant(
+        name: 'برگ انجیری',
+        imagePath: 'lib/image/Aglaonema.png',
+        buildPage: () => const Sansveria(key: ValueKey('monstera')),
+      ),
+      Plant(
+        name: 'پیتوس',
+        imagePath: 'lib/image/Aglaonema.png',
+        buildPage: () => const Sansveria(key: ValueKey('pothos')),
+      ),
+    ];
+
+    plants.sort((a, b) => a.name.compareTo(b.name));
+    searchResults = List.from(plants);
+  }
+
+  void performSearch(String query) {
+    final lower = query.toLowerCase();
+    setState(() {
+      searchResults = lower.isEmpty
+          ? List.from(plants)
+          : plants.where((plant) => plant.name.toLowerCase().contains(lower)).toList();
+    });
   }
 
   Widget buildPlantCard(Plant plant) {
@@ -88,35 +93,52 @@ class _CategoryState extends State<Category> {
       padding: const EdgeInsets.all(10),
       child: TextButton(
         onPressed: () {
+          FocusScope.of(context).unfocus(); // بستن کیبورد قبل از رفتن
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => plant.page),
+            MaterialPageRoute(builder: (context) => plant.buildPage()),
           );
         },
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.amber, borderRadius: BorderRadius.circular(20)),
+            color: Colors.amber,
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: Column(
             children: [
               Image.asset(
                 plant.imagePath,
                 width: 150,
                 height: 150,
+                errorBuilder: (_, __, ___) =>
+                    const Icon(Icons.broken_image, size: 100, color: Colors.grey),
               ),
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   plant.name,
                   style: const TextStyle(
-                      fontSize: 25,
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontWeight: FontWeight.w900,
-                      fontFamily: 'aseman'),
+                    fontSize: 25,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    fontWeight: FontWeight.w900,
+                    fontFamily: 'aseman',
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildAdBanner() {
+    return SafeArea(
+      child: BannerAd(
+        'c13cd83d-f817-44b1-9fc5-1eb7440e7d46',
+        BannerAdSize.BANNER,
+        onAdLoaded: (_) {},
+        onAdClicked: (_) {},
       ),
     );
   }
@@ -129,34 +151,36 @@ class _CategoryState extends State<Category> {
         child: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
-            SafeArea(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: BannerAd(
-                  'c13cd83d-f817-44b1-9fc5-1eb7440e7d46',
-                  BannerAdSize.BANNER,
-                  onAdLoaded: (ad) {},
-                  onAdClicked: (ad) {},
+            buildAdBanner(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Container(
+                margin: const EdgeInsets.all(16),
+                child: TextField(
+                  controller: searchController,
+                  focusNode: searchFocusNode,
+                  onChanged: performSearch,
+                  decoration: InputDecoration(
+                    label: const Text('... گــیاهـتو پیــدا کن'),
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                    labelStyle: const TextStyle(fontFamily: 'aseman', fontSize: 20),
+                    hintText: 'جــستــجو',
+                    hintStyle: const TextStyle(fontFamily: 'aseman', fontSize: 20),
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                    enabledBorder:
+                        OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
+                  ),
                 ),
               ),
             ),
             Align(
               alignment: Alignment.topCenter,
               child: Wrap(
-                children: plants.map((plant) => buildPlantCard(plant)).toList(),
+                children: searchResults.map(buildPlantCard).toList(),
               ),
             ),
-            SafeArea(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: BannerAd(
-                  'c13cd83d-f817-44b1-9fc5-1eb7440e7d46',
-                  BannerAdSize.BANNER,
-                  onAdLoaded: (ad) {},
-                  onAdClicked: (ad) {},
-                ),
-              ),
-            ),
+            buildAdBanner(),
           ],
         ),
       ),
